@@ -1,0 +1,7 @@
+streamlit
+langchain
+requests
+python-dotenv
+streamlit-chat
+pandas
+langchain-google-genai
