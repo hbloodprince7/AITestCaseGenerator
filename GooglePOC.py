@@ -3,11 +3,21 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.schema import HumanMessage
 from dotenv import load_dotenv
 import os
+import re
 
 load_dotenv()
 
 # Replace "gemini-2.0-flash-exp" with your model name
 MODEL_NAME = "gemini-2.0-flash-exp" 
+
+def OutputParser(response_code):
+    match = re.search(r"```(.*?)```", response_code, re.DOTALL)
+    if match:
+        response_code = match.group(1).strip()
+        lines = response_code.splitlines()
+        clean_response = lines[1:]
+        clean_response = "\n".join(clean_response).strip()
+        return clean_response
 
 @st.cache_resource
 def load_llm(model_name):
@@ -51,6 +61,8 @@ if code:
             response = llm.invoke(messages)
             test_code = response.content
 
+            test_code = OutputParser(test_code)
+        
             file_extension = "py"
 
             if "public class" in code:
