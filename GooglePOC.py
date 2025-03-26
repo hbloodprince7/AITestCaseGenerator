@@ -67,7 +67,7 @@ if code:
             if manual_code:
                 if '__name__' in test_code:
                     file_extension = 'py'
-                elif 'assertTrue' in test_code:
+                elif '@Test' in test_code:
                     file_extension = 'java'
                 else:
                     file_extension = 'cs'
