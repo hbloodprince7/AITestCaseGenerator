@@ -36,6 +36,7 @@ manual_code = st.text_area("Or enter code directly:")
 code = None
 
 if uploaded_file is not None:
+    file_extension = uploaded_file.name.split('.')[-1].lower() 
     try:
         bytes_data = uploaded_file.getvalue()
         code = bytes_data.decode("utf-8")
@@ -62,23 +63,17 @@ if code:
             test_code = response.content
 
             test_code = OutputParser(test_code)
-        
-            file_extension = "py"
 
-            if "public class" in code:
-                file_extension = "java"
-            elif "namespace" in code:
-                file_extension = "cs"
-            elif "def " in code: #Check for python functions
-                file_extension = "py"
-            elif "class " in code: # Check for python classes
-                if "def __init__" in code: # Check for python constructor.
-                    file_extension = "py"
+            if manual_code:
+                if '__name__' in test_code:
+                    file_extension = 'py'
+                elif 'assertTrue' in test_code:
+                    file_extension = 'java'
                 else:
-                    file_extension = "java" #if not python, we can assume java.
+                    file_extension = 'cs'
 
             st.download_button(
-                label="Download Unit Tests",
+                label=f"Download unit_tests.{file_extension}",
                 data=test_code.encode("utf-8"),
                 file_name=f"unit_tests.{file_extension}",
                 mime=f"text/{file_extension}",
