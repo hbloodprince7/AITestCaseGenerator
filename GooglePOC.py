@@ -25,7 +25,7 @@ def load_llm(model_name):
 
 llm = load_llm(MODEL_NAME)
 
-st.title(f"Generate Unit Tests with {MODEL_NAME}")
+st.title(f"Generate Unit Tests with Gen AI")
 
 st.subheader("Enter Code or Upload File")
 
